@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I'm Sorry...</title>
+    <style>
+        /* Gradient Background Animation */
+        @keyframes gradientBG {
+            0% { background: #ffb3c6; }
+            50% { background: #ff8fab; }
+            100% { background: #fb6f92; }
+        }
+        body {
+            animation: gradientBG 10s infinite alternate ease-in-out;
+            text-align: center;
+            color: #D2691E;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+            font-family: 'Sacramento', cursive; /* Applying Sacramento font */
+        }
+
+        .envelope-container {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            animation: bounce 2s infinite;
+        }
+        .envelope {
+            position: relative;
+            width: 350px;
+            height: 220px;
+            background: linear-gradient(to bottom, #ff9e00, #ff7b00);
+            border-radius: 10px;
+            box-shadow: 5px 5px 20px rgba(0,0,0,0.3), inset 2px 2px 10px rgba(255,255,255,0.3);
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Glow Effect */
+        .envelope::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255, 200, 100, 0.4) 0%, rgba(255, 200, 100, 0) 80%);
+            opacity: 0.7;
+            border-radius: 10px;
+            z-index: -1;
+        }
+        /* Envelope Flap */
+        .flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 120px;
+            background: linear-gradient(to bottom, #ffb84d, #ff9100);
+            clip-path: polygon(0 0, 100% 0, 50% 100%);
+            transition: transform 0.8s ease-in-out;
+            transform-origin: top;
+            box-shadow: inset 0px 5px 10px rgba(255, 255, 255, 0.3);
+        }
+        .envelope.open .flap {
+            transform: rotateX(180deg);
+        }
+        /* Open Letter Button */
+        .open-letter {
+            display: none;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #ff7b00;
+            color: white;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .open-letter:hover {
+            background-color:#ffd29d;
+        }
+        .envelope.open + .open-letter {
+            display: block;
+        }
+
+        /* Bounce Animation */
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Falling Images */
+        @keyframes fall {
+            0% { transform: translateY(-100px); opacity: 1; }
+            100% { transform: translateY(100vh); opacity: 0; }
+        }
+        .falling-gif {
+            position: absolute;
+            opacity: 1;
+            width: 100px;
+            height: auto;
+            position: absolute;
+        }
+
+        /* Sparkle Animation */
+        @keyframes sparkle {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+        .sparkle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: white;
+            box-shadow: 0 0 10px white;
+            border-radius: 50%;
+            animation: sparkle 4s linear infinite;
+        }
+
+        /* Animation for moving the heart frames */
+        @keyframes floatHearts {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0); }
+        }
+
+        .heart-frame {
+            position: absolute;
+            width: 100px;
+            height: 150px;
+            background: url('file:///C:/Users/User/Documents/IMAGES/SORRY/panda.png') no-repeat center center/cover;
+            animation: floatHearts 2s ease-in-out infinite;
+        }
+
+        .heart-left {
+            left: -120px;
+        }
+        .heart-right {
+            right: -120px;
+        }
+
+        /* Notepad Style (Left Side) */
+        .left {
+            position: absolute;
+            bottom: 70px;
+            left: 20px;
+            width: 300px;
+            height: 330px;
+            border-radius: 10px;
+            border: 2px solid #ff7b00;
+            padding: 10px;
+            font-size: 14px;
+            background-color: rgba(255, 255, 255, 0.8);
+            resize: none;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            text-align: left; /* Align text to the left */
+        }
+
+        /* Notepad Style (Right Side) */
+        .right {
+            position: absolute;
+            bottom: 70px;
+            right: 20px;
+            width: 300px;
+            height: 330px;
+            border-radius: 10px;
+            border: 2px solid #ff7b00;
+            padding: 10px;
+            font-size: 14px;
+            background-color: rgba(255, 255, 255, 0.8);
+            resize: none;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            text-align: left; /* Align text to the left */
+        }
+    </style>
+    <script>
+        function openEnvelope() {
+            document.querySelector('.envelope').classList.toggle('open');
+        }
+        function createFallingGifs() {
+            for (let i = 0; i < 10; i++) {
+                let gif = document.createElement('img');
+                gif.classList.add('falling-gif');
+                gif.src = 'file:///C:/Users/User/Documents/IMAGES/SORRY/giphy.gif';
+                gif.style.left = Math.random() * 100 + 'vw';
+                gif.style.animation = `fall ${Math.random() * 5 + 5}s linear infinite`;
+                document.body.appendChild(gif);
+            }
+        }
+        function createSparkles() {
+            for (let i = 0; i < 15; i++) {
+                let sparkle = document.createElement('div');
+                sparkle.classList.add('sparkle');
+                sparkle.style.left = Math.random() * 100 + 'vw';
+                sparkle.style.top = Math.random() * 100 + 'vh';
+                sparkle.style.animationDuration = Math.random() * 5 + 3 + 's';
+                document.body.appendChild(sparkle);
+            }
+        }
+        window.onload = function() {
+            createFallingGifs();
+            createSparkles();
+        };
+    </script>
+</head>
+<body>
+    <div class="envelope-container">
+        <div class="envelope" onclick="openEnvelope()">
+            <div class="heart-frame heart-left"></div>
+            <div class="heart-frame heart-right"></div>
+            <div class="flap"></div>
+        </div>
+        <button class="open-letter" onclick="window.open('Word.html', '_self')">Open Letter</button>
+    </div>
+    
+    <!-- Notepad on the bottom left (Non-Editable) -->
+    <div class="left" contenteditable="false">  To be honest, I <b>wasn’t fully content</b> with the cake I bought for you on your birthday.
+
+ <i>Gift-giving is my love language</i>, and it honestly felt kuwang.
+
+ Yeah, sure, nag gasto ko, but it all felt so rushed since I had to cram everything right after our Miting de Avance 😭. 
+
+If I wasn’t drowning in campaign duties, I definitely <i>would’ve done so much more</i>. 
+
+And don’t I always give you letters every occasion? But on your birthday, of all days, <i> I wasn't ablet to give you one</i>. 💔
+
+So, to make up for it, here I am, writing you one now. After all, <i>you're the only one who has stayed the longest.</i>
+    </div>
+
+    <!-- Notepad on the bottom right (Non-Editable) -->
+    <div class="right" contenteditable="false">
+ I made you your very own birthday HTML page! 🎉 And when I say I made it for you, I mean, <b>I coded it myself ha.</b> 
+
+Even though  Chatgpt warrior ko, I will never need chatgpt when it comes to my feelings😜<3, 
+
+I find coding too much work but anyways I kept going. Why? Because it's for you. I wanted it to be <i>perfect</i>. 💻✨
+
+I made it <i>cute and special—just like you!</i> 💖 It’s like a little world that’s all about you.
+
+ from the colors to the design, to the little surprises I put in there. It's something I could control, and the one thing I wanted to make sure I gave you right. 🎨💫
+
+ It’s my way of saying I care even through all the annoying coding glitches because you're worth every bit of effort. 💌
+    </div>
+</body>
+</html>
+
+
